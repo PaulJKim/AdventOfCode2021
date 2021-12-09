@@ -22,7 +22,13 @@ defmodule Day3 do
 
     epsilon_bits = gamma_bits
     |> String.graphemes
-    |> Enum.map(fn bit -> if bit == "1" do "0" else "1" end end)
+    |> Enum.map(fn bit ->
+      if bit == "1" do
+        "0"
+      else
+        "1"
+      end
+    end)
     |> Enum.reduce("", fn (bit, result) -> result <> bit end)
 
     (gamma_bits |> Integer.parse(2) |> elem(0)) * (epsilon_bits |> Integer.parse(2) |> elem(0))
