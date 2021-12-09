@@ -1,17 +1,4 @@
 defmodule Day3 do
-  @moduledoc """
-  Documentation for `Day3`.
-  """
-
-  @doc """
-  Hello world.
-
-  ## Examples
-
-      iex> Day3.hello()
-      :world
-
-  """
   def calculateGamma do
     list = File.read!("lib/input.txt") |> String.split("\n")
 
