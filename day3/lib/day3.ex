@@ -18,7 +18,7 @@ defmodule Day3 do
 
     gamma_bits = final_result
     |> convertToBinary(Enum.count(list))
-    |> Enum.reduce("", fn (bit, result) -> result <> (bit |> Integer.to_string) end)
+    |> Enum.reduce("", fn (bit, result) -> result <> bit end)
 
     epsilon_bits = gamma_bits
     |> String.graphemes
@@ -29,6 +29,6 @@ defmodule Day3 do
   end
 
   defp convertToBinary(result, denom) do
-    Enum.map(result, fn x -> Float.round(x/denom) |> trunc end)
+    Enum.map(result, fn x -> Float.round(x/denom) |> trunc |> Integer.to_string end)
   end
 end
