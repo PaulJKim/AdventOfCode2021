@@ -1,5 +1,5 @@
 defmodule Day3 do
-  def calculateGamma do
+  def calculatePowerConsumption do
     list = File.read!("lib/input.txt") |> String.split("\n")
 
     final_result =
@@ -36,5 +36,29 @@ defmodule Day3 do
 
   defp convertToBinary(result, denom) do
     Enum.map(result, fn x -> Float.round(x/denom) |> trunc |> Integer.to_string end)
+  end
+
+  def verifyLifeSupportRating do
+    list = File.read!("lib/input.txt") |> String.split("\n")
+    binary_length = list |> Enum.at(0)
+
+    Enum.each(0..binary_length, fn
+      i ->
+    end)
+    verifyLifeSupportRating(list)
+  end
+
+  def verifyLifeSupportRating([head | tail], current_bit_index, ) do
+    # Potential Approach:
+    # As you iterate through each binary string while looking at a bit
+    # Sort each binary into a new list depending on if the current bit is 1 or 0
+    # Determine which value was more popular/unpopular by using counts
+    # Repeat the process on the selected subset of binary strings until only one string left
+    IO.puts(head)
+    verifyLifeSupportRating(tail)
+  end
+
+  def verifyLifeSupportRating(_) do
+    IO.puts("Finished")
   end
 end
