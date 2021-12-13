@@ -43,6 +43,12 @@ defmodule Day3 do
     verifyLifeSupportRating(list, 0)
   end
 
+  @spec verifyLifeSupportRating([...], any) :: [...]
+  def verifyLifeSupportRating([one_string], _) do
+    IO.puts("Finished")
+    [one_string]
+  end
+
   def verifyLifeSupportRating(list_of_binaries, current_index) do
     # Potential Approach:
     # As you iterate through each binary string while looking at a bit
@@ -56,15 +62,15 @@ defmodule Day3 do
         {current_index, zero_list, [string | one_list]}
       end
     end)
-    # if Enum.count(zero_list) > Enum.count(one_list) do
-    #   verifyLifeSupportRating(zero_list, current_index + 1)
-    # else
-    #   verifyLifeSupportRating(one_list, current_index + 1)
-    # end
-  end
 
-  def verifyListSupportRating([one_string], _) do
-    IO.puts("Finished")
-    [one_string]
+    IO.puts(Enum.count(zero_list))
+    IO.puts(Enum.count(one_list))
+    if Enum.count(zero_list) > Enum.count(one_list) do
+      IO.puts("Zero list had count: #{Enum.count(zero_list)} and was chosen with index #{current_index + 1}")
+      verifyLifeSupportRating(zero_list, current_index + 1)
+    else
+      IO.puts("One list had count: #{Enum.count(one_list)} and was chosen with index #{current_index + 1}")
+      verifyLifeSupportRating(one_list, current_index + 1)
+    end
   end
 end
