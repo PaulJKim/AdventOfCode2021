@@ -40,16 +40,19 @@ defmodule Day3 do
 
   def verifyLifeSupportRating do
     list = File.read!("lib/input.txt") |> String.split("\n")
-    verifyLifeSupportRating(list, 0)
+    oxygen_binary = getOxygenRating(list, 0)
+    c02_binary = getC02Rating(list, 0)
+
+    {oxygen_binary, c02_binary}
   end
 
-  @spec verifyLifeSupportRating([...], any) :: [...]
-  def verifyLifeSupportRating([one_string], _) do
+  @spec getOxygenRating([...], any) :: [...]
+  def getOxygenRating([one_string], _) do
     IO.puts("Finished")
-    [one_string]
+    one_string
   end
 
-  def verifyLifeSupportRating(list_of_binaries, current_index) do
+  def getOxygenRating(list_of_binaries, current_index) do
     # Potential Approach:
     # As you iterate through each binary string while looking at a bit
     # Sort each binary into a new list depending on if the current bit is 1 or 0
@@ -63,14 +66,40 @@ defmodule Day3 do
       end
     end)
 
-    IO.puts(Enum.count(zero_list))
-    IO.puts(Enum.count(one_list))
     if Enum.count(zero_list) > Enum.count(one_list) do
       IO.puts("Zero list had count: #{Enum.count(zero_list)} and was chosen with index #{current_index + 1}")
-      verifyLifeSupportRating(zero_list, current_index + 1)
+      getOxygenRating(zero_list, current_index + 1)
     else
       IO.puts("One list had count: #{Enum.count(one_list)} and was chosen with index #{current_index + 1}")
-      verifyLifeSupportRating(one_list, current_index + 1)
+      getOxygenRating(one_list, current_index + 1)
+    end
+  end
+
+  def getC02Rating([one_string], _) do
+    IO.puts("Finished")
+    one_string
+  end
+
+  def getC02Rating(list_of_binaries, current_index) do
+    # Potential Approach:
+    # As you iterate through each binary string while looking at a bit
+    # Sort each binary into a new list depending on if the current bit is 1 or 0
+    # Determine which value was more popular/unpopular by using counts
+    # Repeat the process on the selected subset of binary strings until only one string left|
+    {_, zero_list, one_list} = list_of_binaries |> Enum.reduce({current_index, [], []}, fn (string, {current_index, zero_list, one_list}) ->
+      if (string |> String.graphemes |> Enum.at(current_index)) == "0" do
+        {current_index, [string | zero_list], one_list}
+      else
+        {current_index, zero_list, [string | one_list]}
+      end
+    end)
+
+    if Enum.count(zero_list) < Enum.count(one_list) do
+      IO.puts("Zero list had count: #{Enum.count(zero_list)} and was chosen with index #{current_index + 1}")
+      getOxygenRating(zero_list, current_index + 1)
+    else
+      IO.puts("One list had count: #{Enum.count(one_list)} and was chosen with index #{current_index + 1}")
+      getOxygenRating(one_list, current_index + 1)
     end
   end
 end
