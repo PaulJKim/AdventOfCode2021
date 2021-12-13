@@ -40,25 +40,31 @@ defmodule Day3 do
 
   def verifyLifeSupportRating do
     list = File.read!("lib/input.txt") |> String.split("\n")
-    binary_length = list |> Enum.at(0)
-
-    Enum.each(0..binary_length, fn
-      i ->
-    end)
-    verifyLifeSupportRating(list)
+    verifyLifeSupportRating(list, 0)
   end
 
-  def verifyLifeSupportRating([head | tail], current_bit_index, ) do
+  def verifyLifeSupportRating(list_of_binaries, current_index) do
     # Potential Approach:
     # As you iterate through each binary string while looking at a bit
     # Sort each binary into a new list depending on if the current bit is 1 or 0
     # Determine which value was more popular/unpopular by using counts
-    # Repeat the process on the selected subset of binary strings until only one string left
-    IO.puts(head)
-    verifyLifeSupportRating(tail)
+    # Repeat the process on the selected subset of binary strings until only one string left|
+    {_, zero_list, one_list} = list_of_binaries |> Enum.reduce({current_index, [], []}, fn (string, {current_index, zero_list, one_list}) ->
+      if (string |> String.graphemes |> Enum.at(current_index)) == "0" do
+        {current_index, [string | zero_list], one_list}
+      else
+        {current_index, zero_list, [string | one_list]}
+      end
+    end)
+    # if Enum.count(zero_list) > Enum.count(one_list) do
+    #   verifyLifeSupportRating(zero_list, current_index + 1)
+    # else
+    #   verifyLifeSupportRating(one_list, current_index + 1)
+    # end
   end
 
-  def verifyLifeSupportRating(_) do
+  def verifyListSupportRating([one_string], _) do
     IO.puts("Finished")
+    [one_string]
   end
 end
