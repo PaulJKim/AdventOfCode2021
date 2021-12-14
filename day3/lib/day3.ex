@@ -43,7 +43,11 @@ defmodule Day3 do
     oxygen_binary = getOxygenRating(list, 0)
     c02_binary = getC02Rating(list, 0)
 
-    {oxygen_binary, c02_binary}
+    calculateLifeSupportRating(oxygen_binary, c02_binary)
+  end
+
+  defp calculateLifeSupportRating(oxygen_rating, c02_rating) do
+    (oxygen_rating |> Integer.parse(2) |> elem(0)) * (c02_rating |> Integer.parse(2) |> elem(0))
   end
 
   @spec getOxygenRating([...], any) :: [...]
@@ -57,7 +61,7 @@ defmodule Day3 do
     # As you iterate through each binary string while looking at a bit
     # Sort each binary into a new list depending on if the current bit is 1 or 0
     # Determine which value was more popular/unpopular by using counts
-    # Repeat the process on the selected subset of binary strings until only one string left|
+    # Repeat the process on the selected subset of binary strings until only one string left
     {_, zero_list, one_list} = list_of_binaries |> Enum.reduce({current_index, [], []}, fn (string, {current_index, zero_list, one_list}) ->
       if (string |> String.graphemes |> Enum.at(current_index)) == "0" do
         {current_index, [string | zero_list], one_list}
@@ -67,9 +71,11 @@ defmodule Day3 do
     end)
 
     if Enum.count(zero_list) > Enum.count(one_list) do
+      IO.puts("One list had count: #{Enum.count(one_list)}")
       IO.puts("Zero list had count: #{Enum.count(zero_list)} and was chosen with index #{current_index + 1}")
       getOxygenRating(zero_list, current_index + 1)
     else
+      IO.puts("Zero list had count: #{Enum.count(zero_list)}")
       IO.puts("One list had count: #{Enum.count(one_list)} and was chosen with index #{current_index + 1}")
       getOxygenRating(one_list, current_index + 1)
     end
@@ -85,7 +91,7 @@ defmodule Day3 do
     # As you iterate through each binary string while looking at a bit
     # Sort each binary into a new list depending on if the current bit is 1 or 0
     # Determine which value was more popular/unpopular by using counts
-    # Repeat the process on the selected subset of binary strings until only one string left|
+    # Repeat the process on the selected subset of binary strings until only one string left
     {_, zero_list, one_list} = list_of_binaries |> Enum.reduce({current_index, [], []}, fn (string, {current_index, zero_list, one_list}) ->
       if (string |> String.graphemes |> Enum.at(current_index)) == "0" do
         {current_index, [string | zero_list], one_list}
@@ -94,12 +100,14 @@ defmodule Day3 do
       end
     end)
 
-    if Enum.count(zero_list) < Enum.count(one_list) do
+    if Enum.count(zero_list) <= Enum.count(one_list) do
+      IO.puts("One list had count: #{Enum.count(one_list)}")
       IO.puts("Zero list had count: #{Enum.count(zero_list)} and was chosen with index #{current_index + 1}")
-      getOxygenRating(zero_list, current_index + 1)
+      getC02Rating(zero_list, current_index + 1)
     else
+      IO.puts("Zero list had count: #{Enum.count(zero_list)}")
       IO.puts("One list had count: #{Enum.count(one_list)} and was chosen with index #{current_index + 1}")
-      getOxygenRating(one_list, current_index + 1)
+      getC02Rating(one_list, current_index + 1)
     end
   end
 end
